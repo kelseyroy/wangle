@@ -5,13 +5,7 @@ import { GameComponent } from './game.component';
 import { Answer } from '../models/answer';
 import { AnswerService } from '../services/answer.service';
 
-const mockAnswer = { id: 1, word: 'ADEPT' } as Answer;
-
-const answerServiceStub = {
-  getAnswer() {
-    return of(mockAnswer);
-  }
-};
+const mockAnswer = <Answer>{ id: 1, word: 'ADEPT' };
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -20,7 +14,12 @@ describe('GameComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [GameComponent],
-      providers: [{ provide: AnswerService, useValue: answerServiceStub }]
+      providers: [{
+        provide: AnswerService,
+        useValue: <Partial<AnswerService>>{
+          getAnswer: jest.fn().mockReturnValue(of(mockAnswer))
+        }
+      }]
     });
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
