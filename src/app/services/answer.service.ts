@@ -11,8 +11,6 @@ import { ANSWERS } from '../mock-data/mock-answers';
 export class AnswerService {
   private readonly _randomId: number = Math.floor(Math.random() * 10) + 1;
 
-  constructor() { }
-
   getAnswer(): Observable<Answer> {
     const answers = from(ANSWERS);
     return answers.pipe(

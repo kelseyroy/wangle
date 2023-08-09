@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Answer } from '../models/answer';
 import { AnswerService } from '../services/answer.service';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-game',

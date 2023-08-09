@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable, from, of, defer } from 'rxjs';
+import { of } from 'rxjs';
 
 import { GameComponent } from './game.component';
 import { Answer } from '../models/answer';
