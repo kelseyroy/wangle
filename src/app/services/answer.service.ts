@@ -9,14 +9,14 @@ import { ANSWERS } from '../mock-data/mock-answers';
   providedIn: 'root'
 })
 export class AnswerService {
-  private _randomId: number = Math.floor(Math.random() * 10) + 1;
+  private readonly _randomId: number = Math.floor(Math.random() * 10) + 1;
 
   constructor() { }
 
   getAnswer(): Observable<Answer> {
     const answers = from(ANSWERS);
     return answers.pipe(
-      filter(answer => answer.id == this._randomId)
+      filter(answer => answer.id === this._randomId)
     )
   }
 }

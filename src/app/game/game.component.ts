@@ -10,7 +10,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./game.component.sass']
 })
 export class GameComponent implements OnInit {
-  answer: Answer = { id: 0, word: '' };
+  protected answer: Answer = { id: 0, word: '' };
   constructor(private answerService: AnswerService) { }
 
   ngOnInit(): void {

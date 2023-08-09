@@ -31,8 +31,10 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set "ADEPT" as answer', async () => {
-    const answer = component.answer.word;
-    expect(answer).toEqual(mockAnswer.word);
+  it('should set "ADEPT" answer in p tag', async () => {
+    const fixture = TestBed.createComponent(GameComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('p')?.textContent).toContain('Answer: ADEPT');
   });
 });
