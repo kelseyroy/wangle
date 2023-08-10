@@ -8,7 +8,7 @@ import { ANSWERS } from '../mock-data/mock-answers';
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const answers = ANSWERS;
+    const answers = ANSWERS
     return { answers };
   }
 

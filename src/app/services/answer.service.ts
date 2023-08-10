@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 import { Answer } from '../models/answer';
-import { ANSWERS } from '../mock-data/mock-answers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnswerService {
   private readonly _randomId: number = Math.floor(Math.random() * 10) + 1;
+  private readonly answerUrl = `api/answers/${this._randomId}`;
+
+  constructor(private http: HttpClient) { }
 
   getAnswer(): Observable<Answer> {
-    const answers = from(ANSWERS);
-    return answers.pipe(
-      filter(answer => answer.id === this._randomId)
-    )
+    return this.http.get<Answer>(this.answerUrl).pipe(
+      tap(() => console.log('fetched answer')),
+      catchError(err => {
+        console.error(`getAnswer failed: ${err.message}`);
+        return of(<Answer>{ id: 1, word: 'ADEPT' });
+      }));
   }
 }
