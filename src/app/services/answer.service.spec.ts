@@ -38,22 +38,20 @@ describe('AnswerService', () => {
   });
 
   it('should log error message and return the default Answer', () => {
-
     const defaultAnswer = <Answer>{ id: 1, word: 'ADEPT' };
     const errorMessage = 'This is a mock error message!';
-    const consoleSpy = jest.spyOn(console, 'error');
+    const errorSpy = jest.spyOn(console, 'error');
 
     service.getAnswer().subscribe({
       next: () => fail('should not have succeeded'),
       error: (error: HttpErrorResponse) => {
         expect(error.message).toBe(errorMessage);
-        expect(consoleSpy).toHaveBeenCalledWith(`getAnswer failed: ${errorMessage}`);
+        expect(errorSpy).toHaveBeenCalledWith(`getAnswer failed: ${errorMessage}`);
       },
     });
 
     const req = httpMock.expectOne(`api/answers/${service['_randomId']}`);
     req.flush(defaultAnswer);
     httpMock.verify();
-    consoleSpy.mockRestore();
   });
 });
