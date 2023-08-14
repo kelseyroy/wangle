@@ -19,7 +19,6 @@ describe('LogService', () => {
     const errorMessage = "This is an error message";
     service.error(errorMessage);
     expect(error).toBeCalledWith('%c' + errorMessage, 'color: #DC143C');
-    error.mockReset();
   });
 
   it('should output the given message as a warning to the console', () => {
@@ -27,7 +26,6 @@ describe('LogService', () => {
     const warningMessage = "This is an warning message";
     service.warn(warningMessage);
     expect(warn).toBeCalledWith('%c' + warningMessage, 'color: #FF8C00');
-    warn.mockReset();
   });
 
   it('should output informational message to the console', () => {
@@ -35,6 +33,5 @@ describe('LogService', () => {
     const infoMessage = "This is an info message";
     service.info(infoMessage);
     expect(info).toBeCalledWith('%c' + infoMessage, 'color: #6495ED');
-    info.mockReset();
   });
 });
