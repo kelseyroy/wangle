@@ -18,7 +18,6 @@ describe('LogService', () => {
     const error = jest.spyOn(console, 'error').mockImplementation();
     const errorMessage = "This is an error message";
     service.error(errorMessage);
-    expect(error).toHaveBeenCalled();
     expect(error).toBeCalledWith('%c' + errorMessage, 'color: #DC143C');
     error.mockReset();
   });
@@ -27,7 +26,6 @@ describe('LogService', () => {
     const warn = jest.spyOn(console, 'warn').mockImplementation();
     const warningMessage = "This is an warning message";
     service.warn(warningMessage);
-    expect(warn).toHaveBeenCalled();
     expect(warn).toBeCalledWith('%c' + warningMessage, 'color: #FF8C00');
     warn.mockReset();
   });
@@ -36,7 +34,6 @@ describe('LogService', () => {
     const info = jest.spyOn(console, 'info').mockImplementation();
     const infoMessage = "This is an info message";
     service.info(infoMessage);
-    expect(info).toHaveBeenCalled();
     expect(info).toBeCalledWith('%c' + infoMessage, 'color: #6495ED');
     info.mockReset();
   });
