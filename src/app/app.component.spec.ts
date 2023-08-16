@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 
@@ -7,7 +8,10 @@ describe('AppComponent', () => {
     declarations: [
       AppComponent,
       GameComponent
-    ]
+    ],
+    imports: [
+      HttpClientTestingModule
+    ],
   }));
 
   it('should create the app', () => {
