@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Answer } from '../models/answer';
 import { ANSWERS } from '../mock-data/mock-answers';
+import { GAMES } from '../mock-data/mock-games';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
-    const answers = ANSWERS
-    return { answers };
+    const answers = ANSWERS;
+    const games = GAMES;
+    return { answers, games };
   }
 
   genId(answers: Answer[]): number {

@@ -42,13 +42,13 @@ describe('GameService', () => {
   });
 
   it('should make an HTTP POST request to create a new Game', () => {
-    const newGame = <Game>{acceptedGuesses: <Guess[]>[], answer: <Answer>{id: 1, word: "MOCK"}, status: Status.Playing};
+    const newGame = <Game>{ acceptedGuesses: <Guess[]>[], answer: <Answer>{ id: 1, word: "MOCK" }, status: Status.Playing };
 
     service.addGame(newGame).subscribe(game => {
       expect(game).toEqual(newGame);
     });
 
-    const req = httpMock.expectOne({method: "POST"});
+    const req = httpMock.expectOne({ method: "POST" });
     expect(req.request.method).toBe('POST');
     req.flush(newGame);
     httpMock.verify();
