@@ -1,9 +1,4 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LogService {
+export class Logger {
 
   info(msg: string): void {
     console.info('%c' + msg, 'color: #6495ED');
