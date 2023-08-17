@@ -1,28 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { GameComponent } from './game.component';
-import { Answer } from '../models/answer';
-import { AnswerService } from '../services/answer.service';
-
-const mockAnswer = <Answer>{ id: 1, word: 'ADEPT' };
+import { GamePlayService } from '../services/game-play.service';
 
 describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
+  let service: GamePlayService;
+  let guessResult: string;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GameComponent],
-      providers: [{
-        provide: AnswerService,
-        useValue: <Partial<AnswerService>>{
-          getAnswer: jest.fn().mockReturnValue(of(mockAnswer))
-        }
-      }]
+      imports: [
+        HttpClientTestingModule
+      ],
+      providers: [GamePlayService]
     });
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
+    service = TestBed.inject(GamePlayService);
+    guessResult = '';
     fixture.detectChanges();
   });
 
@@ -30,10 +28,14 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set "ADEPT" answer in p tag', async () => {
-    const fixture = TestBed.createComponent(GameComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('p')?.textContent).toContain('Answer: ADEPT');
+  it('should call handleKeydown after a keydown event', () => {
+    let handleKeydownSpy = jest.spyOn(component, 'handleKeydown');
+    let keydown = new KeyboardEvent('keydown', { 'key': 'a' });
+
+    document.dispatchEvent(keydown);
+    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
+
+    expect(guessResult).toEqual('A');
+    expect(handleKeydownSpy).toHaveBeenCalled();
   });
 });
