@@ -28,8 +28,8 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call handleKeydown after a keydown event', () => {
-    let handleKeydownSpy = jest.spyOn(component, 'handleKeydown');
+  it('should call onKeyDown after a keydown event', () => {
+    let handleKeydownSpy = jest.spyOn(component, 'onKeyDown');
     let keydown = new KeyboardEvent('keydown', { 'key': 'a' });
 
     document.dispatchEvent(keydown);
