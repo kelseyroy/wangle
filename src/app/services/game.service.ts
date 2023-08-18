@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { Game } from '../models/game';
@@ -19,19 +19,18 @@ export class GameService {
   addGame(game: Game): Observable<Game> {
     return this.http.post<Game>(this.gamesUrl, game, this.httpOptions).pipe(
       tap((newGame: Game) => console.log(`added hero w/ id=${newGame.id}`)),
-      catchError(err => {
-        console.error(`addGame failed: ${err.message}`);
-        return of(<Game>{});
-      })
-    );
+      catchError((err: Error) => {
+        console.error(`getGames failed: ${err.message}`);
+        return throwError(() => err);
+      }));
   }
 
   getGames(): Observable<Game> {
     return this.http.get<Game>(this.gamesUrl).pipe(
       tap(() => console.log('fetched games')),
-      catchError(err => {
+      catchError((err: Error) => {
         console.error(`getGames failed: ${err.message}`);
-        return of(<Game>{});
-      }));
+        return throwError(() => err);
+      }))
   }
 }
