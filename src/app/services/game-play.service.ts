@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
@@ -11,13 +11,13 @@ interface Game {
   status: Status;
   currentGuessIdx: number;
   currentGuess: string;
-};
+}
 
 enum Status {
   playing,
   won,
   lost
-};
+}
 
 const emptyGame: Game = {
   answer: undefined,
@@ -34,13 +34,13 @@ export class GamePlayService {
   private readonly game$ = new BehaviorSubject<Game>(emptyGame);
   constructor(private answerService: AnswerService) { this.startNewGame() }
 
-  public readonly currentGuess$ = this.game$.pipe(
+  public readonly currentGuess$: Observable<string> = this.game$.pipe(
     map(game => game.currentGuess)
   )
-  public readonly acceptedGuesses$ = this.game$.pipe(
+  public readonly acceptedGuesses$: Observable<string[]> = this.game$.pipe(
     map(game => game.acceptedGuesses)
   )
-  public readonly currentGuessIdx$ = this.game$.pipe(
+  public readonly currentGuessIdx$: Observable<number> = this.game$.pipe(
     map(game => game.currentGuessIdx)
   )
 
@@ -75,7 +75,7 @@ export class GamePlayService {
       acceptedGuesses: [...acceptedGuesses, currentGuess],
       currentGuessIdx: currentGuessIdx + 1,
       currentGuess: ''
-    });
+    })
   }
 
   private startNewGame(): void {

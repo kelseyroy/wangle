@@ -7,9 +7,9 @@ import { AnswerService } from './answer.service';
 
 describe('GamePlayService', () => {
   let service: GamePlayService;
-  let guessResult: string;
-  let acceptedGuessesResult: string[];
-  let callAddLetters: any;
+  const callAddLetters = (letters: string) => {
+    for (let i = 0; i < letters.length; i++) service.addLetter(letters[i]);
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,11 +19,6 @@ describe('GamePlayService', () => {
       providers: [AnswerService]
     });
     service = TestBed.inject(GamePlayService);
-    guessResult = '';
-    acceptedGuessesResult = [];
-    callAddLetters = (letters: string) => {
-      for (let i = 0; i < letters.length; i++) service.addLetter(letters[i]);
-    }
   });
 
   afterEach(() => {
@@ -35,7 +30,7 @@ describe('GamePlayService', () => {
   });
 
   it('should return A when A is added to currentGuess', async () => {
-    let newLetter = 'A';
+    const newLetter = 'A';
 
     service.addLetter(newLetter);
 
@@ -43,7 +38,7 @@ describe('GamePlayService', () => {
   });
 
   it('should return ABCDE when A, B, C, D and E are added to currentGuess', async () => {
-    let letters = 'ABCDE';
+    const letters = 'ABCDE';
 
     callAddLetters(letters);
 
@@ -51,7 +46,7 @@ describe('GamePlayService', () => {
   });
 
   it('should return DORIT when DORITE is attempted for currentGuess', async () => {
-    let letters = 'DORITE';
+    const letters = 'DORITE';
 
     callAddLetters(letters);
 
@@ -59,7 +54,7 @@ describe('GamePlayService', () => {
   });
 
   it('should return LOL when removeLetter is called twice to currentGuess', async () => {
-    let letters = 'LOLLY';
+    const letters = 'LOLLY';
 
     callAddLetters(letters);
     for (let i = 0; i < 2; i++) service.removeLetter();

@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { GamePlayService } from '../services/game-play.service';
 
@@ -7,12 +8,12 @@ import { GamePlayService } from '../services/game-play.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   constructor(private gameplayService: GamePlayService) { }
-  protected currentGuess: string = '';
+  protected currentGuess = '';
   protected acceptedGuesses: string[] = []
-  protected currentGuess$: any;
-  protected acceptedGuesses$: any;
+  protected currentGuess$?: Subscription;
+  protected acceptedGuesses$?: Subscription;
 
   ngOnInit(): void {
     this.currentGuess$ = this.gameplayService.currentGuess$.subscribe(currentGuess => this.currentGuess = currentGuess);
@@ -20,12 +21,12 @@ export class GameComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.currentGuess$.unsubscribe();
-    this.acceptedGuesses$.unsubscribe();
+    this.currentGuess$?.unsubscribe();
+    this.acceptedGuesses$?.unsubscribe();
   }
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
-    let key = event.key;
+    const key = event.key;
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const backspace = 'Backspace';
     const enter = 'Enter';

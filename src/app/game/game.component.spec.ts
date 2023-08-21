@@ -33,8 +33,8 @@ describe('GameComponent', () => {
   });
 
   it('should call onKeyDown after a keydown event', () => {
-    let handleKeydownSpy = jest.spyOn(component, 'onKeyDown');
-    let keydown = new KeyboardEvent('keydown', { 'key': 'a' });
+    const handleKeydownSpy = jest.spyOn(component, 'onKeyDown');
+    const keydown = new KeyboardEvent('keydown', { 'key': 'a' });
 
     document.dispatchEvent(keydown);
     service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
