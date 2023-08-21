@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { firstValueFrom } from 'rxjs';
 
 import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
@@ -8,6 +9,7 @@ describe('GamePlayService', () => {
   let service: GamePlayService;
   let guessResult: string;
   let acceptedGuessesResult: string[];
+  let callAddLetters: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,6 +21,9 @@ describe('GamePlayService', () => {
     service = TestBed.inject(GamePlayService);
     guessResult = '';
     acceptedGuessesResult = [];
+    callAddLetters = (letters: string) => {
+      for (let i = 0; i < letters.length; i++) service.addLetter(letters[i]);
+    }
   });
 
   afterEach(() => {
@@ -29,82 +34,58 @@ describe('GamePlayService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return A when A is added to currentGuess', () => {
+  it('should return A when A is added to currentGuess', async () => {
     let newLetter = 'A';
 
     service.addLetter(newLetter);
-    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
 
-    expect(guessResult.includes(newLetter)).toBeTruthy()
+    expect(await firstValueFrom(service.currentGuess$)).toEqual(newLetter);
   });
 
-  it('should return ABCDE when A, B, C, D and E are added to currentGuess', () => {
+  it('should return ABCDE when A, B, C, D and E are added to currentGuess', async () => {
     let letters = 'ABCDE';
 
-    for (let i = 0; i < 5; i++) service.addLetter(letters[i]);
-    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
+    callAddLetters(letters);
 
-    expect(guessResult.includes(letters)).toBeTruthy()
+    expect(await firstValueFrom(service.currentGuess$)).toEqual(letters);
   });
 
-  it('should return DORIT when DORITE is attempted for currentGuess', () => {
+  it('should return DORIT when DORITE is attempted for currentGuess', async () => {
     let letters = 'DORITE';
 
-    for (let i = 0; i < 6; i++) service.addLetter(letters[i]);
-    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
-    let canDoriteBeGuessed = 
+    callAddLetters(letters);
 
-    expect(guessResult.includes('DORIT')).toBeTruthy()
+    expect(await firstValueFrom(service.currentGuess$)).toEqual('DORIT');
   });
 
-  it('should return LOL when removeLetter is called 3 times to currentGuess', () => {
+  it('should return LOL when removeLetter is called twice to currentGuess', async () => {
     let letters = 'LOLLY';
 
-    for (let i = 0; i < 5; i++) service.addLetter(letters[i]);
+    callAddLetters(letters);
     for (let i = 0; i < 2; i++) service.removeLetter();
-    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
 
-    expect(guessResult.includes('LOL')).toBeTruthy()
+    expect(await firstValueFrom(service.currentGuess$)).toEqual('LOL');
   });
 
-  it('should submit a guess when valid guess is submitted', () => {
-    let validGuess = 'ADEPT';
-    let guessIdx = 0;
-    let currentGuess = '';
+  it('should submit a guess when valid guess is submitted', async () => {
+    const validGuess = 'ADEPT';
 
-    for (let i = 0; i < 5; i++) service.addLetter(validGuess[i]);
+    callAddLetters(validGuess);
     service.submitGuess();
-    service.acceptedGuesses$.subscribe(guesses => acceptedGuessesResult = guesses);
-    service.currentGuessIdx$.subscribe(idx => guessIdx = idx);
-    service.currentGuess$.subscribe(guess => currentGuess = guess);
 
-    let isAdeptAccepted = acceptedGuessesResult.includes(validGuess);
-    let isIdxUpdated = guessIdx === 1;
-    let isCurrentGuessCleared = currentGuess === '';
-
-    expect(isAdeptAccepted).toBeTruthy();
-    expect(isIdxUpdated).toBeTruthy();
-    expect(isCurrentGuessCleared).toBeTruthy();
+    expect(await firstValueFrom(service.acceptedGuesses$)).toEqual([validGuess]);
+    expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(1);
+    expect(await firstValueFrom(service.currentGuess$)).toEqual('');
   });
 
-  it('should not update acceptedGuesses when an invalid guess is submitted', () => {
-    let invalidGuess = 'DO';
-    let guessIdx = 0;
-    let currentGuess = '';
+  it('should not update acceptedGuesses when an invalid guess is submitted', async () => {
+    const invalidGuess = 'DO';
 
-    for (let i = 0; i < 2; i++) service.addLetter(invalidGuess[i]);
+    callAddLetters(invalidGuess);
     service.submitGuess();
-    service.acceptedGuesses$.subscribe(guesses => acceptedGuessesResult = guesses);
-    service.currentGuessIdx$.subscribe(idx => guessIdx = idx);
-    service.currentGuess$.subscribe(guess => currentGuess = guess);
 
-    let isDoAccepted = acceptedGuessesResult.includes(invalidGuess)
-    let isIdxUpdated = guessIdx === 1;
-    let isCurrentGuessCleared = currentGuess === '';
-
-    expect(isDoAccepted).toBeFalsy();
-    expect(isIdxUpdated).toBeFalsy();
-    expect(isCurrentGuessCleared).toBeFalsy();
+    expect(await firstValueFrom(service.acceptedGuesses$)).toEqual([]);
+    expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(0);
+    expect(await firstValueFrom(service.currentGuess$)).toEqual(invalidGuess);
   });
-
 });

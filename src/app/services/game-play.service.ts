@@ -6,7 +6,7 @@ import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
 
 interface Game {
-  answer: Answer;
+  answer?: Answer;
   acceptedGuesses: string[];
   status: Status;
   currentGuessIdx: number;
@@ -20,7 +20,7 @@ enum Status {
 };
 
 const emptyGame: Game = {
-  answer: <Answer>{},
+  answer: undefined,
   acceptedGuesses: [],
   status: Status.playing,
   currentGuessIdx: 0,
@@ -50,41 +50,36 @@ export class GamePlayService {
 
   public addLetter(letter: string) {
     if (this.game.currentGuess.length === 5) return;
-    let updatedGuess = this.game.currentGuess + letter
 
     this.game$.next({
       ...this.game,
-      currentGuess: updatedGuess
+      currentGuess: this.game.currentGuess + letter
     });
   }
 
   public removeLetter() {
     if (this.game.currentGuess.length === 0) return;
-    let { currentGuess } = this.game;
-    let updatedGuess = currentGuess.substring(0, currentGuess.length - 1);
 
     this.game$.next({
       ...this.game,
-      currentGuess: updatedGuess
+      currentGuess: this.game.currentGuess.substring(0, this.game.currentGuess.length - 1)
     });
   }
 
   public submitGuess() {
     if (this.game.currentGuess.length < 5) return;
-    let { acceptedGuesses, currentGuess, currentGuessIdx } = this.game;
-    let updatedGuesses = [...acceptedGuesses, currentGuess];
-    let updatedIdx = currentGuessIdx += 1;
+    const { acceptedGuesses, currentGuess, currentGuessIdx } = this.game;
 
     this.game$.next({
       ...this.game,
-      acceptedGuesses: updatedGuesses,
-      currentGuessIdx: updatedIdx,
+      acceptedGuesses: [...acceptedGuesses, currentGuess],
+      currentGuessIdx: currentGuessIdx + 1,
       currentGuess: ''
     });
   }
 
   private startNewGame(): void {
-    this.setAnswer;
+    this.setAnswer();
   }
 
   private setAnswer(): void {
