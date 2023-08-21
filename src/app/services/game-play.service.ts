@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
+import { Logger } from './log.service';
 
 interface Game {
   answer?: Answer;
@@ -32,6 +33,7 @@ const emptyGame: Game = {
 })
 export class GamePlayService {
   private readonly game$ = new BehaviorSubject<Game>(emptyGame);
+  private log = new Logger();
   constructor(private answerService: AnswerService) { this.startNewGame() }
 
   public readonly currentGuess$: Observable<string> = this.game$.pipe(
@@ -42,6 +44,9 @@ export class GamePlayService {
   )
   public readonly currentGuessIdx$: Observable<number> = this.game$.pipe(
     map(game => game.currentGuessIdx)
+  )
+  public readonly answer$: Observable<Answer> = this.game$.pipe(
+    map(game => game.answer!)
   )
 
   protected get game() {
@@ -78,7 +83,8 @@ export class GamePlayService {
     })
   }
 
-  private startNewGame(): void {
+  public startNewGame(): void {
+    this.log.info(`Starting new game...`)
     this.setAnswer();
   }
 

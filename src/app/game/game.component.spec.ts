@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { firstValueFrom } from 'rxjs';
 
 import { GameComponent } from './game.component';
 import { GamePlayService } from '../services/game-play.service';
@@ -32,14 +33,13 @@ describe('GameComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call onKeyDown after a keydown event', () => {
+  it('should call onKeyDown after a keydown event', async () => {
     const handleKeydownSpy = jest.spyOn(component, 'onKeyDown');
     const keydown = new KeyboardEvent('keydown', { 'key': 'a' });
 
     document.dispatchEvent(keydown);
-    service.currentGuess$.subscribe(currentGuess => guessResult = currentGuess);
-
-    expect(guessResult).toEqual('A');
+    
     expect(handleKeydownSpy).toHaveBeenCalled();
+    expect(await firstValueFrom(service.currentGuess$)).toEqual('A');
   });
 });

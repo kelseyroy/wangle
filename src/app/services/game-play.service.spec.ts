@@ -1,9 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 
 import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
+import { Answer } from '../models/answer';
+
+const mockAnswer = <Answer>{ id: 1, word: 'ADEPT' };
 
 describe('GamePlayService', () => {
   let service: GamePlayService;
@@ -16,7 +19,12 @@ describe('GamePlayService', () => {
       imports: [
         HttpClientTestingModule
       ],
-      providers: [AnswerService]
+      providers: [{
+        provide: AnswerService,
+        useValue: <Partial<AnswerService>>{
+          getAnswer: jest.fn().mockReturnValue(of(mockAnswer))
+        }
+      }]
     });
     service = TestBed.inject(GamePlayService);
   });
@@ -27,6 +35,10 @@ describe('GamePlayService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should set Answer as adept', async () => {
+    expect(await firstValueFrom(service.answer$)).toEqual(mockAnswer);
   });
 
   it('should return A when A is added to currentGuess', async () => {

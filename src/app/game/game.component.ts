@@ -17,7 +17,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentGuess$ = this.gameplayService.currentGuess$.subscribe(currentGuess => this.currentGuess = currentGuess);
-    this.acceptedGuesses$ = this.gameplayService.acceptedGuesses$.subscribe(acceptedGuesses => this.acceptedGuesses = acceptedGuesses)
+    this.acceptedGuesses$ = this.gameplayService.acceptedGuesses$.subscribe(acceptedGuesses => this.acceptedGuesses = acceptedGuesses);
   }
 
   ngOnDestroy() {
