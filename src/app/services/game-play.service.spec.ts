@@ -6,7 +6,7 @@ import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
 
-const mockAnswer = <Answer>{ id: 1, word: 'ADEPT' };
+const mockAnswer: Answer = { id: 1, word: 'ADEPT' }
 
 describe('GamePlayService', () => {
   let service: GamePlayService;

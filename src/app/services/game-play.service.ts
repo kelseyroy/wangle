@@ -33,8 +33,8 @@ const emptyGame: Game = {
 })
 export class GamePlayService {
   private readonly game$ = new BehaviorSubject<Game>(emptyGame);
-  private log = new Logger();
-  constructor(private answerService: AnswerService) { this.startNewGame() }
+  private readonly log = new Logger();
+  constructor(private readonly answerService: AnswerService) { this.startNewGame() }
 
   public readonly currentGuess$: Observable<string> = this.game$.pipe(
     map(game => game.currentGuess)

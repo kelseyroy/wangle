@@ -14,9 +14,9 @@ export class GameService {
   private readonly httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  private log = new Logger;
+  private readonly log = new Logger;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   addGame(game: Game): Observable<Game> {
     return this.http.post<Game>(this.gamesUrl, game, this.httpOptions).pipe(

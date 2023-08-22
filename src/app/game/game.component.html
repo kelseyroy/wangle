@@ -1,2 +1,2 @@
-<p>Current Guess: {{currentGuess}}</p>
-<p>Accepted Guesses: {{acceptedGuesses}}</p>
+<p>Current Guess: {{gameplayService.currentGuess$ | async}}</p>
+<p>Accepted Guesses: {{gameplayService.acceptedGuesses$ | async}}</p>

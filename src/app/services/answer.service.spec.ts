@@ -25,7 +25,7 @@ describe('AnswerService', () => {
   });
 
   it('should make an HTTP GET request to return an Answer', () => {
-    const mockAnswer = <Answer>{ id: 1, word: 'MOCK' };
+    const mockAnswer: Answer = { id: 1, word: 'ADEPT' }
 
     service.getAnswer().subscribe(answer => {
       expect(answer).toEqual(mockAnswer);
@@ -38,7 +38,6 @@ describe('AnswerService', () => {
   });
 
   it('should log error message and return the default Answer', () => {
-    const defaultAnswer = <Answer>{ id: 1, word: 'ADEPT' };
     const errorMessage = 'This is a mock error message!';
     const errorSpy = jest.spyOn(console, 'error');
 
@@ -51,7 +50,7 @@ describe('AnswerService', () => {
     });
 
     const req = httpMock.expectOne(`api/answers/${service['_randomId']}`);
-    req.flush(defaultAnswer);
+    req.flush(errorMessage);
     httpMock.verify();
   });
 });

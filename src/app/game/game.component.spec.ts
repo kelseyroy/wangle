@@ -9,10 +9,10 @@ describe('GameComponent', () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let service: GamePlayService;
-  let guessResult: string;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      declarations: [GameComponent],
       imports: [
         HttpClientTestingModule
       ],
@@ -21,12 +21,7 @@ describe('GameComponent', () => {
     fixture = TestBed.createComponent(GameComponent);
     component = fixture.componentInstance;
     service = TestBed.inject(GamePlayService);
-    guessResult = '';
     fixture.detectChanges();
-  });
-
-  afterEach(() => {
-    component.ngOnDestroy();
   });
 
   it('should create', () => {
