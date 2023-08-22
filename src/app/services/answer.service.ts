@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 import { Answer } from '../models/answer';
+import { Logger } from './log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +12,16 @@ import { Answer } from '../models/answer';
 export class AnswerService {
   private readonly _randomId: number = Math.floor(Math.random() * 10) + 1;
   private readonly answerUrl = `api/answers/${this._randomId}`;
+  private readonly log = new Logger();
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   getAnswer(): Observable<Answer> {
     return this.http.get<Answer>(this.answerUrl).pipe(
-      tap(() => console.log('fetched answer')),
-      catchError(err => {
-        console.error(`getAnswer failed: ${err.message}`);
-        return of(<Answer>{ id: 1, word: 'ADEPT' });
+      tap(() => this.log.info('fetched answer')),
+      catchError((err: Error) => {
+        this.log.error(`getAnswer failed: ${err.message}`);
+        return throwError(() => err);
       }));
   }
 }

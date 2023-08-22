@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
-import { Answer } from '../models/answer';
-import { AnswerService } from '../services/answer.service';
+import { GamePlayService } from '../services/game-play.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit {
-  protected answer: Answer = { id: 0, word: '' };
-  constructor(private answerService: AnswerService) { }
+export class GameComponent {
+  constructor(protected readonly gameplayService: GamePlayService) { }
 
-  ngOnInit(): void {
-    this.getAnswer();
-  }
+  @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
+    const key = event.key;
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const backspace = 'Backspace';
+    const enter = 'Enter';
 
-  getAnswer(): void {
-    this.answerService.getAnswer()
-      .subscribe(answer => this.answer = answer);
+    if (key === backspace) this.gameplayService.removeLetter();
+    if (alphabet.includes(key)) this.gameplayService.addLetter(key.toUpperCase());
+    if (key === enter) this.gameplayService.submitGuess();
   }
 }
