@@ -1,11 +1,11 @@
 <div class="keyboard">
     <div class="key-row" id="row-0">
-        <app-key *ngFor="let key of keys[0]" [key]="key"></app-key>
+        <app-key *ngFor="let key of keys[0]" [key]="key" (keyClick)="onKeyBoardClick($event)"></app-key>
     </div>
     <div class="key-row" id="row-1">
-        <app-key *ngFor="let key of keys[1]" [key]="key"></app-key>
+        <app-key *ngFor="let key of keys[1]" [key]="key" (keyClick)="onKeyBoardClick($event)"></app-key>
     </div>
     <div class="key-row" id="row-2">
-        <app-key *ngFor="let key of keys[2]" [key]="key"></app-key>
+        <app-key *ngFor="let key of keys[2]" [key]="key" (keyClick)="onKeyBoardClick($event)"></app-key>
     </div>
 </div>

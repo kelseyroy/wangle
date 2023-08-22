@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 import { KEYS } from '../models/keys';
 
@@ -8,6 +8,10 @@ import { KEYS } from '../models/keys';
   styleUrls: ['./keyboard.component.scss']
 })
 export class KeyboardComponent {
-  protected keys = KEYS;
+  protected readonly keys = KEYS;
+  @Output() keyBoardClick = new EventEmitter<string>();
 
+  public onKeyBoardClick(letter: string) {
+    this.keyBoardClick.emit(letter);
+  }
 }

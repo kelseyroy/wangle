@@ -4,6 +4,8 @@ import { firstValueFrom } from 'rxjs';
 
 import { GameComponent } from './game.component';
 import { GamePlayService } from '../services/game-play.service';
+import { KeyboardComponent } from '../keyboard/keyboard.component';
+import { KeyComponent } from '../key/key.component';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -12,7 +14,11 @@ describe('GameComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GameComponent],
+      declarations: [
+        GameComponent,
+        KeyboardComponent,
+        KeyComponent
+      ],
       imports: [
         HttpClientTestingModule
       ],
