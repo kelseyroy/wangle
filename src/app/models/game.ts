@@ -9,7 +9,7 @@ export interface Game {
 }
 
 export enum Status {
-    Playing,
-    Won,
-    Lost
+    playing,
+    won,
+    lost
 }
