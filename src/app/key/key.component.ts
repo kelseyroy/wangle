@@ -9,11 +9,11 @@ export class KeyComponent {
   @Input() public key!: string;
   @Output() keyClick = new EventEmitter<string>();
 
-  protected largeButton(): boolean {
-    return this.key === 'ENTER' || this.key === 'DELETE';
+  protected isLargeButton(key: string): boolean {
+    return key === 'ENTER' || key === 'DELETE';
   }
 
-  public onKeyClick() {
-    this.keyClick.emit(this.key);
+  public onKeyClick(key: string) {
+    this.keyClick.emit(key);
   }
 }

@@ -1,6 +1,6 @@
 <div class="key" id="key-{{key}}">
-    <button [ngClass]="largeButton()
+    <button [ngClass]="isLargeButton(key)
     ? 'large-btn'
     : 'small-btn' "
-    (click)="onKeyClick()">{{key}}</button>
+    (click)="onKeyClick(key)">{{key}}</button>
 </div>
