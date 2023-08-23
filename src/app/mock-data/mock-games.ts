@@ -11,7 +11,7 @@ export const GAMES: Game[] = [
             { guessNum: 2, word: "LABOR" },
             { guessNum: 3, word: "ADEPT" },
         ],
-        status: Status.Won,
+        status: Status.won,
     },
     {
         id: 2,
@@ -24,6 +24,6 @@ export const GAMES: Game[] = [
             { guessNum: 5, word: "STOOL" },
             { guessNum: 6, word: "ADEPT" },
         ],
-        status: Status.Lost,
+        status: Status.lost,
     }
 ];
