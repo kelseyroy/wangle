@@ -11,10 +11,10 @@ export class GameComponent {
   constructor(protected readonly gameplayService: GamePlayService) { }
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
-    this.handleKeyEvents(event.key);
+    this.handleKeyEvent(event.key);
   }
 
-  public handleKeyEvents(key: string) {
+  public handleKeyEvent(key: string) {
     const formattedKey = key.toUpperCase();
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
