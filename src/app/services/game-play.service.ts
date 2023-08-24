@@ -15,7 +15,10 @@ interface Game {
   currentGuessIdx: number;
   currentGuess: string;
 }
-
+  public readonly answer$: Observable<Answer> = this.game$.pipe(
+    map(game => game.answer),
+    filter((answer): answer is Answer => !!answer)
+  )
 const emptyGame: Game = {
   answer: undefined,
   acceptedGuesses: [],
