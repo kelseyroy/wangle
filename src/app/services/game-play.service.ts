@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, take } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
@@ -15,10 +15,7 @@ interface Game {
   currentGuessIdx: number;
   currentGuess: string;
 }
-  public readonly answer$: Observable<Answer> = this.game$.pipe(
-    map(game => game.answer),
-    filter((answer): answer is Answer => !!answer)
-  )
+
 const emptyGame: Game = {
   answer: undefined,
   acceptedGuesses: [],
@@ -33,19 +30,24 @@ const emptyGame: Game = {
 export class GamePlayService {
   private readonly game$ = new BehaviorSubject<Game>(emptyGame);
   private readonly log = new Logger();
+
   constructor(private readonly answerService: AnswerService) { this.startNewGame() }
 
   public readonly currentGuess$: Observable<string> = this.game$.pipe(
     map(game => game.currentGuess)
   )
+
   public readonly acceptedGuesses$: Observable<string[]> = this.game$.pipe(
     map(game => game.acceptedGuesses)
   )
+
   public readonly currentGuessIdx$: Observable<number> = this.game$.pipe(
     map(game => game.currentGuessIdx)
   )
+
   public readonly answer$: Observable<Answer> = this.game$.pipe(
-    map(game => game.answer!)
+    map(game => game.answer),
+    filter((answer): answer is Answer => !!answer)
   )
 
   protected get game() {
@@ -97,7 +99,8 @@ export class GamePlayService {
         if (answer.word.includes(key)) return KeyScore.inWord;
 
         return KeyScore.notInWord;
-      })
+      }),
+      take(1)
     );
   }
 
