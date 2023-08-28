@@ -1,27 +1,45 @@
-$primary-key-color: #EFEFEF;
-$hover-key-color: darken($primary-key-color, 5%);
+$hover-key-color: brightness(0.95);
+$dark-grey: #787c7f;
+$light-grey: #EFEFEF;
+$green: #6ca965;
+$yellow: #c8b653;
 
 .key {
     display: inherit;
     flex-wrap: wrap;
     margin: 2px;
+}
 
-    button {
-        border: none;
-        border-radius: 4px;
-        height: 3.75rem;
-        background-color: $primary-key-color;
+button {
+    border: none;
+    border-radius: 4px;
+    height: 3.75rem;
 
-        &:hover {
-            background-color: $hover-key-color;
-        }
+    &:hover {
+        filter: $hover-key-color;
     }
+}
 
-    .large-btn {
-        width: 4rem;
-    }
+.large-btn {
+    width: 4rem;
+}
 
-    .small-btn {
-        width: 2.75rem;
-    }
+.small-btn {
+    width: 2.75rem;
+}
+
+.light-grey {
+    background-color: $light-grey;
+}
+
+.dark-grey {
+    background-color: $dark-grey;
+}
+
+.yellow {
+    background-color: $yellow;
+}
+
+.green {
+    background-color: $green;
 }

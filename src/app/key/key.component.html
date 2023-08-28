@@ -1,6 +1,6 @@
 <div class="key" id="key-{{key}}">
-    <button [ngClass]="isLargeButton(key)
-    ? 'large-btn'
-    : 'small-btn' "
-    (click)="onKeyClick(key)">{{key}}</button>
+    <button [class.light-grey]="(keyColor$| async) === 'light-grey'"
+        [class.dark-grey]="(keyColor$| async) === 'dark-grey'" [class.yellow]="(keyColor$| async) === 'yellow'"
+        [class.green]="(keyColor$| async) === 'green'" [class.large-btn]="isLargeButton(key)"
+        [class.small-btn]="!isLargeButton(key)" (click)="onKeyClick(key)">{{key}}</button>
 </div>
