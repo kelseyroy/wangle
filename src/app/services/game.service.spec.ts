@@ -42,7 +42,7 @@ describe('GameService', () => {
   });
 
   it('should make an HTTP POST request to create a new Game', () => {
-    const newGame = <Game>{ acceptedGuesses: <Guess[]>[], answer: <Answer>{ id: 1, word: "MOCK" }, status: Status.Playing };
+    const newGame = <Game>{ acceptedGuesses: <Guess[]>[], answer: <Answer>{ id: 1, word: "MOCK" }, status: Status.playing };
 
     service.addGame(newGame).subscribe(game => {
       expect(game).toEqual(newGame);

@@ -5,6 +5,7 @@ import { firstValueFrom, of } from 'rxjs';
 import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
+import { KeyScore } from '../models/key-score';
 
 const mockAnswer: Answer = { id: 1, word: 'ADEPT' }
 
@@ -94,5 +95,26 @@ describe('GamePlayService', () => {
     expect(await firstValueFrom(service.acceptedGuesses$)).toEqual([]);
     expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(0);
     expect(await firstValueFrom(service.currentGuess$)).toEqual(invalidGuess);
+  });
+  it('should return key scores for A, T, C, and Q keys when ACTED is guessed', async () => {
+    const wrongGuess = 'ACTED';
+
+    callAddLetters(wrongGuess);
+    service.submitGuess();
+
+    expect(await firstValueFrom(service.evaluateKey$('A'))).toEqual(KeyScore.correct);
+    expect(await firstValueFrom(service.evaluateKey$('T'))).toEqual(KeyScore.inWord);
+    expect(await firstValueFrom(service.evaluateKey$('C'))).toEqual(KeyScore.notInWord);
+    expect(await firstValueFrom(service.evaluateKey$('Q'))).toEqual(KeyScore.unused);
+  });
+
+  it('should always return the KeyScore unused for ENTER and DELETE', async () => {
+    const enterGuess = 'ENTER';
+
+    callAddLetters(enterGuess);
+    service.submitGuess();
+
+    expect(await firstValueFrom(service.evaluateKey$('ENTER'))).toEqual(KeyScore.unused);
+    expect(await firstValueFrom(service.evaluateKey$('DELETE'))).toEqual(KeyScore.unused);
   });
 });

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, take } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
 import { Logger } from './log.service';
+import { Status } from '../models/game';
+import { KeyScore } from '../models/key-score';
 
 interface Game {
   answer?: Answer;
@@ -12,12 +14,6 @@ interface Game {
   status: Status;
   currentGuessIdx: number;
   currentGuess: string;
-}
-
-enum Status {
-  playing,
-  won,
-  lost
 }
 
 const emptyGame: Game = {
@@ -34,19 +30,24 @@ const emptyGame: Game = {
 export class GamePlayService {
   private readonly game$ = new BehaviorSubject<Game>(emptyGame);
   private readonly log = new Logger();
+
   constructor(private readonly answerService: AnswerService) { this.startNewGame() }
 
   public readonly currentGuess$: Observable<string> = this.game$.pipe(
     map(game => game.currentGuess)
   )
+
   public readonly acceptedGuesses$: Observable<string[]> = this.game$.pipe(
     map(game => game.acceptedGuesses)
   )
+
   public readonly currentGuessIdx$: Observable<number> = this.game$.pipe(
     map(game => game.currentGuessIdx)
   )
+
   public readonly answer$: Observable<Answer> = this.game$.pipe(
-    map(game => game.answer!)
+    map(game => game.answer),
+    filter((answer): answer is Answer => !!answer)
   )
 
   protected get game() {
@@ -81,6 +82,26 @@ export class GamePlayService {
       currentGuessIdx: currentGuessIdx + 1,
       currentGuess: ''
     })
+  }
+
+  public evaluateKey$(key: string): Observable<KeyScore> {
+    return combineLatest([this.answer$, this.acceptedGuesses$]).pipe(
+      map(([answer, acceptedGuesses]) => {
+        const correctLetters: string[] = acceptedGuesses.map(guess =>
+          guess.split('').filter((letter, idx) => letter === answer.word[idx])
+        ).flat();
+        const usedLetters: string[] = [...new Set(acceptedGuesses.join(''))];
+
+        if (!usedLetters.includes(key)) return KeyScore.unused;
+
+        if (correctLetters.includes(key)) return KeyScore.correct;
+
+        if (answer.word.includes(key)) return KeyScore.inWord;
+
+        return KeyScore.notInWord;
+      }),
+      take(1)
+    );
   }
 
   public startNewGame(): void {
