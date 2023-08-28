@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, take } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, take, distinctUntilChanged } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
@@ -99,8 +99,7 @@ export class GamePlayService {
         if (answer.word.includes(key)) return KeyScore.inWord;
 
         return KeyScore.notInWord;
-      }),
-      take(1)
+      })
     );
   }
 

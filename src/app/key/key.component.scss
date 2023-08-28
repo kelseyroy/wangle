@@ -10,7 +10,7 @@ $hover-key-color: darken($primary-key-color, 5%);
         border: none;
         border-radius: 4px;
         height: 3.75rem;
-        background-color: $primary-key-color;
+        // background-color: $primary-key-color;
 
         &:hover {
             background-color: $hover-key-color;
@@ -23,5 +23,21 @@ $hover-key-color: darken($primary-key-color, 5%);
 
     .small-btn {
         width: 2.75rem;
+    }
+
+    .green {
+        background-color: #6ca965;
+    }
+
+    .yellow {
+        background-color: #c8b653;
+    }
+
+    .light-grey {
+        background-color: #EFEFEF;
+    }
+
+    .dark-grey {
+        background-color: #787c7f;
     }
 }
