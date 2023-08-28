@@ -11,13 +11,15 @@ export class GameComponent {
   constructor(protected readonly gameplayService: GamePlayService) { }
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
-    const key = event.key;
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    const backspace = 'Backspace';
-    const enter = 'Enter';
+    this.handleKeyEvent(event.key);
+  }
 
-    if (key === backspace) this.gameplayService.removeLetter();
-    if (alphabet.includes(key)) this.gameplayService.addLetter(key.toUpperCase());
-    if (key === enter) this.gameplayService.submitGuess();
+  public handleKeyEvent(key: string) {
+    const formattedKey = key.toUpperCase();
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    if (formattedKey === 'BACKSPACE' || formattedKey === 'DELETE') this.gameplayService.removeLetter();
+    if (alphabet.includes(formattedKey)) this.gameplayService.addLetter(key.toUpperCase());
+    if (formattedKey === 'ENTER') this.gameplayService.submitGuess();
   }
 }

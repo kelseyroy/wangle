@@ -6,11 +6,15 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { InMemoryDataService } from './services/in-memory-data.service';
+import { KeyboardComponent } from './keyboard/keyboard.component';
+import { KeyComponent } from './key/key.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameComponent
+    GameComponent,
+    KeyboardComponent,
+    KeyComponent
   ],
   imports: [
     BrowserModule,

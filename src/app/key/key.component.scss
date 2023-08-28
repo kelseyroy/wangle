@@ -1,0 +1,27 @@
+$primary-key-color: #EFEFEF;
+$hover-key-color: darken($primary-key-color, 5%);
+
+.key {
+    display: inherit;
+    flex-wrap: wrap;
+    margin: 2px;
+
+    button {
+        border: none;
+        border-radius: 4px;
+        height: 3.75rem;
+        background-color: $primary-key-color;
+
+        &:hover {
+            background-color: $hover-key-color;
+        }
+    }
+
+    .large-btn {
+        width: 4rem;
+    }
+
+    .small-btn {
+        width: 2.75rem;
+    }
+}
