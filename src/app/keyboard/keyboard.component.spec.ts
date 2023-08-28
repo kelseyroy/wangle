@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { KeyboardComponent } from './keyboard.component';
 import { KeyComponent } from '../key/key.component';
@@ -12,7 +13,10 @@ describe('KeyboardComponent', () => {
       declarations: [
         KeyboardComponent,
         KeyComponent
-      ]
+      ],
+      imports: [
+        HttpClientTestingModule
+      ],
     });
     fixture = TestBed.createComponent(KeyboardComponent);
     component = fixture.componentInstance;
