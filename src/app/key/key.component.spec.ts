@@ -6,7 +6,7 @@ import { KeyComponent } from './key.component';
 import { GamePlayService } from '../services/game-play.service';
 import { AnswerService } from '../services/answer.service';
 import { Answer } from '../models/answer';
-import { KeyColor } from './key.component';
+import { LetterScore } from '../models/letter-score';
 
 let component: KeyComponent;
 let fixture: ComponentFixture<KeyComponent>;
@@ -54,13 +54,13 @@ describe('KeyComponent - ENTER Key', () => {
     expect(compiled.querySelector('.large-btn')?.textContent).toEqual('ENTER');
   });
 
-  it('should assign light-grey key color for the ENTER key', async () => {
+  it('should have .no-score class for the ENTER key', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('ENTER');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('ENTER');
   });
 
-  it('should not change the key color for the ENTER key after a new guess is submitted', async () => {
+  it('should not change the key class for the ENTER key after a new guess is submitted', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const enterGuess = 'ENTER';
 
@@ -68,8 +68,8 @@ describe('KeyComponent - ENTER Key', () => {
     service.submitGuess();
     fixture.detectChanges();
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('ENTER');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('ENTER');
 
   });
 });
@@ -112,13 +112,13 @@ describe('KeyComponent - DELETE Key', () => {
     expect(compiled.querySelector('.large-btn')?.textContent).toEqual('DELETE');
   });
 
-  it('should assign light-grey key color for the DELETE key', async () => {
+  it('should have .no-score class for the DELETE key', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('DELETE');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('DELETE');
   });
 
-  it('should not change key color for the DELETE key', async () => {
+  it('should not change key class for the DELETE key given new accepted guess', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const enterGuess = 'DELTS';
 
@@ -126,8 +126,8 @@ describe('KeyComponent - DELETE Key', () => {
     service.submitGuess();
     fixture.detectChanges();
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('DELETE');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('DELETE');
 
   });
 });
@@ -170,34 +170,34 @@ describe('KeyComponent - A Key', () => {
     expect(compiled.querySelector(`#key-A`)?.textContent).toContain('A')
   });
 
-  it('should set key class to .yellow when SPARE is an accepted guess', async () => {
+  it('should set key class to in-word when SPARE is an accepted guess', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('A');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('A');
 
     const newGuess = 'SPARE';
     callAddLetters(newGuess);
     service.submitGuess();
     fixture.detectChanges();
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.yellow);
-    expect(compiled.querySelector('.yellow')?.textContent).toEqual('A');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.inWord);
+    expect(compiled.querySelector('.in-word')?.textContent).toEqual('A');
   });
 
-  it('should set key class to .green when ADEPT is an accepted guess', async () => {
+  it('should set key class to .correct when ADEPT is an accepted guess', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('A');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('A');
 
     const correctGuess = 'ADEPT';
     callAddLetters(correctGuess);
     service.submitGuess();
     fixture.detectChanges();
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.green);
-    expect(compiled.querySelector('.green')?.textContent).toEqual('A');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.correct);
+    expect(compiled.querySelector('.correct')?.textContent).toEqual('A');
   });
 });
 
@@ -239,18 +239,18 @@ describe('KeyComponent - Q Key', () => {
     expect(compiled.querySelector(`#key-Q`)?.textContent).toContain('Q')
   });
 
-  it('should set key class to .dark-grey when a Q is guessed but not in answer', async () => {
+  it('should set key class to .incorrect when a Q is guessed but not in answer', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.lightGrey);
-    expect(compiled.querySelector('.light-grey')?.textContent).toEqual('Q');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.scoreless);
+    expect(compiled.querySelector('.no-score')?.textContent).toEqual('Q');
 
     const newGuess = 'QUIET';
     callAddLetters(newGuess);
     service.submitGuess();
     fixture.detectChanges();
 
-    expect(await firstValueFrom(component.keyColor$)).toEqual(KeyColor.darkGrey);
-    expect(compiled.querySelector('.dark-grey')?.textContent).toEqual('Q');
+    expect(await firstValueFrom(service.evaluateKey$(component.key))).toEqual(LetterScore.notInWord);
+    expect(compiled.querySelector('.incorrect')?.textContent).toEqual('Q');
   });
 });
