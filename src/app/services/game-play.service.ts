@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, take } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
 import { Logger } from './log.service';
 import { Status } from '../models/game';
-import { KeyScore } from '../models/key-score';
+import { LetterScore } from '../models/letter-score';
 
 interface Game {
   answer?: Answer;
@@ -84,7 +84,7 @@ export class GamePlayService {
     })
   }
 
-  public evaluateKey$(key: string): Observable<KeyScore> {
+  public evaluateKey$(key: string): Observable<LetterScore> {
     return combineLatest([this.answer$, this.acceptedGuesses$]).pipe(
       map(([answer, acceptedGuesses]) => {
         const correctLetters: string[] = acceptedGuesses.map(guess =>
@@ -92,15 +92,14 @@ export class GamePlayService {
         ).flat();
         const usedLetters: string[] = [...new Set(acceptedGuesses.join(''))];
 
-        if (!usedLetters.includes(key)) return KeyScore.unused;
+        if (!usedLetters.includes(key)) return LetterScore.scoreless;
 
-        if (correctLetters.includes(key)) return KeyScore.correct;
+        if (correctLetters.includes(key)) return LetterScore.correct;
 
-        if (answer.word.includes(key)) return KeyScore.inWord;
+        if (answer.word.includes(key)) return LetterScore.inWord;
 
-        return KeyScore.notInWord;
-      }),
-      take(1)
+        return LetterScore.notInWord;
+      })
     );
   }
 

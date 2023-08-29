@@ -5,7 +5,7 @@ import { firstValueFrom, of } from 'rxjs';
 import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
-import { KeyScore } from '../models/key-score';
+import { LetterScore } from '../models/letter-score';
 
 const mockAnswer: Answer = { id: 1, word: 'ADEPT' }
 
@@ -96,25 +96,25 @@ describe('GamePlayService', () => {
     expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(0);
     expect(await firstValueFrom(service.currentGuess$)).toEqual(invalidGuess);
   });
-  it('should return key scores for A, T, C, and Q keys when ACTED is guessed', async () => {
+  it('should return letter scores for A, T, C, and Q keys when ACTED is guessed', async () => {
     const wrongGuess = 'ACTED';
 
     callAddLetters(wrongGuess);
     service.submitGuess();
 
-    expect(await firstValueFrom(service.evaluateKey$('A'))).toEqual(KeyScore.correct);
-    expect(await firstValueFrom(service.evaluateKey$('T'))).toEqual(KeyScore.inWord);
-    expect(await firstValueFrom(service.evaluateKey$('C'))).toEqual(KeyScore.notInWord);
-    expect(await firstValueFrom(service.evaluateKey$('Q'))).toEqual(KeyScore.unused);
+    expect(await firstValueFrom(service.evaluateKey$('A'))).toEqual(LetterScore.correct);
+    expect(await firstValueFrom(service.evaluateKey$('T'))).toEqual(LetterScore.inWord);
+    expect(await firstValueFrom(service.evaluateKey$('C'))).toEqual(LetterScore.notInWord);
+    expect(await firstValueFrom(service.evaluateKey$('Q'))).toEqual(LetterScore.scoreless);
   });
 
-  it('should always return the KeyScore unused for ENTER and DELETE', async () => {
+  it('should always return the LetterScore scoreless for ENTER and DELETE', async () => {
     const enterGuess = 'ENTER';
 
     callAddLetters(enterGuess);
     service.submitGuess();
 
-    expect(await firstValueFrom(service.evaluateKey$('ENTER'))).toEqual(KeyScore.unused);
-    expect(await firstValueFrom(service.evaluateKey$('DELETE'))).toEqual(KeyScore.unused);
+    expect(await firstValueFrom(service.evaluateKey$('ENTER'))).toEqual(LetterScore.scoreless);
+    expect(await firstValueFrom(service.evaluateKey$('DELETE'))).toEqual(LetterScore.scoreless);
   });
 });

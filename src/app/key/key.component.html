@@ -1,6 +1,3 @@
 <div class="key" id="key-{{key}}">
-    <button [ngClass]="isLargeButton(key)
-    ? 'large-btn'
-    : 'small-btn' "
-    (click)="onKeyClick(key)">{{key}}</button>
+    <button [class]="[buttonSize, gameplayService.evaluateKey$(key) | async]" (click)="onKeyClick(key)">{{key}}</button>
 </div>
