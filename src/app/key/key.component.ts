@@ -17,7 +17,7 @@ export enum KeyColor {
   styleUrls: ['./key.component.scss']
 })
 export class KeyComponent implements OnInit {
-  protected keyColor$!: Observable<KeyColor>;
+  public keyColor$!: Observable<KeyColor>;
 
   @Input() public key!: string;
   @Output() keyClick = new EventEmitter<string>();
