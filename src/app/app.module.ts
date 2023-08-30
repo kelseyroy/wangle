@@ -8,13 +8,19 @@ import { GameComponent } from './game/game.component';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import { KeyboardComponent } from './keyboard/keyboard.component';
 import { KeyComponent } from './key/key.component';
+import { BoardComponent } from './board/board.component';
+import { BoardRowComponent } from './board-row/board-row.component';
+import { BoardTileComponent } from './board-tile/board-tile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     KeyboardComponent,
-    KeyComponent
+    KeyComponent,
+    BoardComponent,
+    BoardRowComponent,
+    BoardTileComponent
   ],
   imports: [
     BrowserModule,
