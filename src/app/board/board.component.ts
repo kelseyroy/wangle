@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent {
-
+  public guesses: Array<string[]> = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
 }

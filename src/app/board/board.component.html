@@ -1,1 +1,3 @@
-<p>board works!</p>
+<div class="board">
+    <app-board-row *ngFor="let guess of guesses; let rowIdx = index" [rowIdx]="rowIdx" [guess]="guess"></app-board-row>
+</div>

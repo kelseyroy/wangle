@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-board-tile',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./board-tile.component.scss']
 })
 export class BoardTileComponent {
-
+  @Input() public letter!: string;
+  @Input() public tileIdx!: number;
 }

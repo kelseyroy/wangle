@@ -1,3 +1,4 @@
 <p>Current Guess: {{gameplayService.currentGuess$ | async}}</p>
 <p>Accepted Guesses: {{gameplayService.acceptedGuesses$ | async}}</p>
+<app-board></app-board>
 <app-keyboard (keyBoardClick)="handleKeyEvent($event)"></app-keyboard>

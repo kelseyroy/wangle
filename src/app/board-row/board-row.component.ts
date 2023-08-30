@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-board-row',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./board-row.component.scss']
 })
 export class BoardRowComponent {
-
+  @Input() public guess!: string[];
+  @Input() public rowIdx!: number;
 }
