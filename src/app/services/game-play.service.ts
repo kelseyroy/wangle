@@ -54,6 +54,24 @@ export class GamePlayService {
     return this.game$.getValue();
   }
 
+  public getBoard$(rows: number): Observable<string[]> {
+    return combineLatest([this.acceptedGuesses$, this.currentGuess$, this.currentGuessIdx$]).pipe(
+      map(([acceptedGuesses, currentGuess, currentGuessIdx]) => {
+        const guesses = [];
+        for (let i = 0; i < rows; i++) {
+          if (i === currentGuessIdx) {
+            guesses.push(currentGuess)
+          } else if (!acceptedGuesses[i]) {
+            guesses.push("")
+          } else {
+            guesses.push(acceptedGuesses[i])
+          }
+        }
+        return guesses;
+      })
+    );
+  }
+
   public addLetter(letter: string) {
     if (this.game.currentGuess.length === 5) return;
 
@@ -74,6 +92,7 @@ export class GamePlayService {
 
   public submitGuess() {
     if (this.game.currentGuess.length < 5) return;
+    if (this.game.acceptedGuesses.length >= 6) return;
     const { acceptedGuesses, currentGuess, currentGuessIdx } = this.game;
 
     this.game$.next({

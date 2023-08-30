@@ -12,10 +12,16 @@ describe('BoardTileComponent', () => {
     });
     fixture = TestBed.createComponent(BoardTileComponent);
     component = fixture.componentInstance;
+    component.letter = 'A';
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display letter input', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.tile')?.textContent).toEqual("A")
   });
 });

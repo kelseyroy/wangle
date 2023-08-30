@@ -4,6 +4,9 @@ import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { KeyboardComponent } from './keyboard/keyboard.component';
 import { KeyComponent } from './key/key.component';
+import { BoardComponent } from './board/board.component';
+import { BoardRowComponent } from './board-row/board-row.component';
+import { BoardTileComponent } from './board-tile/board-tile.component';
 
 describe('AppComponent', () => {
   let app: AppComponent;
@@ -14,7 +17,10 @@ describe('AppComponent', () => {
         AppComponent,
         GameComponent,
         KeyboardComponent,
-        KeyComponent
+        KeyComponent,
+        BoardComponent,
+        BoardRowComponent,
+        BoardTileComponent
       ],
       imports: [
         HttpClientTestingModule
