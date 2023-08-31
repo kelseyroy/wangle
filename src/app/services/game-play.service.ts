@@ -145,6 +145,22 @@ export class GamePlayService {
     );
   }
 
+  public evaluateLetter$(rowIdx: number, tileIdx: number): Observable<LetterScore> {
+    return combineLatest([this.answer$, this.acceptedGuesses$]).pipe(
+      map(([answer, acceptedGuesses]) => {
+        if (!acceptedGuesses[rowIdx]) return LetterScore.scoreless;
+
+        const splitAnswer: string[] = answer.word.split('');
+        const letter: string = acceptedGuesses.map(guess => guess.split(''))[rowIdx][tileIdx];
+
+        if (letter === splitAnswer[tileIdx]) return LetterScore.correct;
+        if (splitAnswer.includes(letter)) return LetterScore.inWord;
+
+        return LetterScore.notInWord;
+      })
+    );
+  }
+
   public startNewGame(): void {
     this.log.info(`Starting new game...`)
     this.setAnswer();
