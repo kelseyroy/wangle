@@ -1,0 +1,9 @@
+<div [class]="['go-modal', (gameplayService.status$ | async) === 'playing' ? 'hidden': 'open']">
+    <div class="content">
+        <h1>Game Over</h1>
+        <div>
+            <p class='message' *ngIf="(gameplayService.status$ | async) === 'won'">Congratulations! You win!</p>
+            <p class='message' *ngIf="(gameplayService.status$ | async) === 'lost'">Better luck next time.</p>
+        </div>
+    </div>
+</div>
