@@ -98,6 +98,7 @@ export class GamePlayService {
     const { acceptedGuesses, currentGuess, currentGuessIdx } = this.game;
 
     if (this.game.currentGuess.length < 5) return;
+    if (this.game.currentGuessIdx >= 6) return;
 
     if (this.game.currentGuess === this.game.answer?.word) {
       this.game$.next({
