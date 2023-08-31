@@ -1,0 +1,3 @@
+<div class="board">
+    <app-board-row *ngFor="let guess of gameplayService.getBoard$(numOfRows) | async; let rowIdx = index" [rowIdx]="rowIdx" [guess]="guess"></app-board-row>
+</div>

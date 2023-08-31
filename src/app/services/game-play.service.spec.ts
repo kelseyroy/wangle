@@ -117,4 +117,30 @@ describe('GamePlayService', () => {
     expect(await firstValueFrom(service.evaluateKey$('ENTER'))).toEqual(LetterScore.scoreless);
     expect(await firstValueFrom(service.evaluateKey$('DELETE'))).toEqual(LetterScore.scoreless);
   });
+
+  it('should instaniate an empty board with the same number of rows as parameter', async () => {
+    const rows = 10;
+    const expectedBoard = Array(rows).fill("");
+
+    expect(await firstValueFrom(service.getBoard$(rows))).toEqual(expectedBoard);
+  });
+
+  it('should update board with current guess at currentGuessIdx$', async () => {
+    const guess = 'GUESS';
+
+    callAddLetters(guess);
+
+    expect(await firstValueFrom(service.getBoard$(6))).toEqual([guess, "", "", "", "", ""]);
+    expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(0);
+  });
+
+  it('should update the board when a guess is submitted', async () => {
+    const guess = 'GUESS';
+
+    callAddLetters(guess);
+    service.submitGuess();
+
+    expect(await firstValueFrom(service.getBoard$(6))).toEqual([guess, "", "", "", "", ""]);
+    expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(1);
+  });
 });
