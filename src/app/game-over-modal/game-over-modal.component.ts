@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 
 import { GamePlayService } from '../services/game-play.service';
 
@@ -8,5 +8,14 @@ import { GamePlayService } from '../services/game-play.service';
   styleUrls: ['./game-over-modal.component.scss']
 })
 export class GameOverModalComponent {
-  constructor(protected readonly gameplayService: GamePlayService) { }
+  private element: any;
+
+  constructor(protected readonly gameplayService: GamePlayService, private el: ElementRef) {
+    this.element = el.nativeElement;
+  }
+
+  public close() {
+    this.element.style.display = 'none';
+    this.element.querySelector('.go-modal').classList.remove('open');
+  }
 }

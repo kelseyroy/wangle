@@ -21,7 +21,7 @@ describe('AppComponent', () => {
         KeyComponent,
         BoardComponent,
         BoardRowComponent,
-        BoardTileComponent
+        BoardTileComponent,
         GameOverModalComponent
       ],
       imports: [

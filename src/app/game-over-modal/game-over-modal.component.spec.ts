@@ -72,4 +72,18 @@ describe('GameOverModalComponent', () => {
     expect(await firstValueFrom(service.status$)).toEqual(Status.lost);
     expect(compiled.querySelector('.open .message')?.textContent).toEqual('Better luck next time.');
   });
+  it('should not display the modal when modal is closed', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const answer = "ADEPT"
+
+    callAddLetters(answer);
+    service.submitGuess();
+    fixture.detectChanges();
+    expect(compiled.querySelector('.open .message')?.textContent).toEqual('Congratulations! You win!');
+
+    component.close();
+    fixture.detectChanges();
+
+    expect(compiled.querySelector('.open')).toBeFalsy();
+  });
 });

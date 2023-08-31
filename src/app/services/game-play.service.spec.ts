@@ -143,6 +143,7 @@ describe('GamePlayService', () => {
 
     expect(await firstValueFrom(service.getBoard$(6))).toEqual([guess, "", "", "", "", ""]);
     expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(1);
+  });
   it('should change game status to won if player guesses answer', async () => {
     const answer = 'ADEPT';
 
@@ -163,3 +164,4 @@ describe('GamePlayService', () => {
     expect(await firstValueFrom(service.status$)).toEqual(Status.lost);
   });
 });
+
