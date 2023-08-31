@@ -6,6 +6,7 @@ import { GamePlayService } from './game-play.service';
 import { AnswerService } from './answer.service';
 import { Answer } from '../models/answer';
 import { LetterScore } from '../models/letter-score';
+import { Status } from '../models/game';
 
 const mockAnswer: Answer = { id: 1, word: 'ADEPT' }
 
@@ -142,5 +143,23 @@ describe('GamePlayService', () => {
 
     expect(await firstValueFrom(service.getBoard$(6))).toEqual([guess, "", "", "", "", ""]);
     expect(await firstValueFrom(service.currentGuessIdx$)).toEqual(1);
+  it('should change game status to won if player guesses answer', async () => {
+    const answer = 'ADEPT';
+
+    callAddLetters(answer);
+    service.submitGuess();
+
+    expect(await firstValueFrom(service.status$)).toEqual(Status.won);
+  });
+
+  it('should change game status to lost if player does not guess answer in 6 tries', async () => {
+    const wrongGuess = 'WRONG';
+
+    for (let i = 0; i < 6; i++) {
+      callAddLetters(wrongGuess);
+      service.submitGuess();
+    }
+
+    expect(await firstValueFrom(service.status$)).toEqual(Status.lost);
   });
 });
