@@ -14,8 +14,8 @@ describe('BoardTileComponent', () => {
   let component: BoardTileComponent;
   let fixture: ComponentFixture<BoardTileComponent>;
   let service: GamePlayService;
-  const callAddLetters = (letters: string) => {
-    for (let i = 0; i < letters.length; i++) service.addLetter(letters[i]);
+  const callAddLetters = (letters: string[]) => {
+    letters.forEach(letter => service.addLetter(letter));
   };
 
   beforeEach(() => {
@@ -61,7 +61,7 @@ describe('BoardTileComponent', () => {
 
   it('should have correct class when letter matches answer at tile index', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const correctGuess = "ADEPT";
+    const correctGuess = "ADEPT".split('');
 
     callAddLetters(correctGuess);
     service.submitGuess();
@@ -72,7 +72,7 @@ describe('BoardTileComponent', () => {
   });
   it('should have Q, E and T should have incorrect, in-word and correct classes when QUIET is guessed', async () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const guess = "QUIET";
+    const guess = "QUIET".split('');
 
     callAddLetters(guess);
     service.submitGuess();
