@@ -50,6 +50,10 @@ export class GamePlayService {
     filter((answer): answer is Answer => !!answer)
   )
 
+  public readonly status$: Observable<Status> = this.game$.pipe(
+    map(game => game.status)
+  )
+
   protected get game() {
     return this.game$.getValue();
   }
@@ -91,16 +95,35 @@ export class GamePlayService {
   }
 
   public submitGuess() {
-    if (this.game.currentGuess.length < 5) return;
-    if (this.game.acceptedGuesses.length >= 6) return;
     const { acceptedGuesses, currentGuess, currentGuessIdx } = this.game;
 
-    this.game$.next({
-      ...this.game,
-      acceptedGuesses: [...acceptedGuesses, currentGuess],
-      currentGuessIdx: currentGuessIdx + 1,
-      currentGuess: ''
-    })
+    if (this.game.currentGuess.length < 5) return;
+    if (this.game.currentGuessIdx >= 6) return;
+
+    if (this.game.currentGuess === this.game.answer?.word) {
+      this.game$.next({
+        ...this.game,
+        acceptedGuesses: [...acceptedGuesses, currentGuess],
+        currentGuessIdx: currentGuessIdx + 1,
+        currentGuess: '',
+        status: Status.won
+      })
+    } else if (this.game.currentGuessIdx === 5) {
+      this.game$.next({
+        ...this.game,
+        acceptedGuesses: [...acceptedGuesses, currentGuess],
+        currentGuessIdx: currentGuessIdx + 1,
+        currentGuess: '',
+        status: Status.lost
+      })
+    } else {
+      this.game$.next({
+        ...this.game,
+        acceptedGuesses: [...acceptedGuesses, currentGuess],
+        currentGuessIdx: currentGuessIdx + 1,
+        currentGuess: ''
+      })
+    }
   }
 
   public evaluateKey$(key: string): Observable<LetterScore> {

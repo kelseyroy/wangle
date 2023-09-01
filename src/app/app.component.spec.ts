@@ -7,6 +7,7 @@ import { KeyComponent } from './key/key.component';
 import { BoardComponent } from './board/board.component';
 import { BoardRowComponent } from './board-row/board-row.component';
 import { BoardTileComponent } from './board-tile/board-tile.component';
+import { GameOverModalComponent } from './game-over-modal/game-over-modal.component';
 
 describe('AppComponent', () => {
   let app: AppComponent;
@@ -20,7 +21,8 @@ describe('AppComponent', () => {
         KeyComponent,
         BoardComponent,
         BoardRowComponent,
-        BoardTileComponent
+        BoardTileComponent,
+        GameOverModalComponent
       ],
       imports: [
         HttpClientTestingModule
