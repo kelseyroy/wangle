@@ -1,3 +1,4 @@
 <div class="row" [id]="rowIdx">
-    <app-board-tile *ngFor="let letter of getLetters(guess); let tileIdx = index" [letter]="letter" [tileIdx]="tileIdx"></app-board-tile>
+    <app-board-tile *ngFor="let letter of getLetters(guess); let tileIdx = index" [letter]="letter" [tileIdx]="tileIdx"
+        [rowIdx]="rowIdx"></app-board-tile>
 </div>

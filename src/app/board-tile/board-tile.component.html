@@ -1,1 +1,1 @@
-<div class="tile" [id]="tileIdx">{{letter}}</div>
+<div [class]="['tile', gameplayService.evaluateLetter$(rowIdx, tileIdx) | async]" [id]="tileIdx">{{letter}}</div>

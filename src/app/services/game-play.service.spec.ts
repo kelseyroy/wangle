@@ -163,5 +163,28 @@ describe('GamePlayService', () => {
 
     expect(await firstValueFrom(service.status$)).toEqual(Status.lost);
   });
+
+  it('should return letter scores for Q, E and T when QUIET is guessed', async () => {
+    const wrongGuess = 'QUIET';
+
+    callAddLetters(wrongGuess);
+    service.submitGuess();
+
+    expect(await firstValueFrom(service.evaluateLetter$(0, 0))).toEqual(LetterScore.notInWord);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 3))).toEqual(LetterScore.inWord);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 4))).toEqual(LetterScore.correct);
+  });
+
+  it('should return scoreless when guess has not yet been submitted', async () => {
+    const wrongGuess = 'ADEPT';
+
+    callAddLetters(wrongGuess);
+
+    expect(await firstValueFrom(service.evaluateLetter$(0, 0))).toEqual(LetterScore.scoreless);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 1))).toEqual(LetterScore.scoreless);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 2))).toEqual(LetterScore.scoreless);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 3))).toEqual(LetterScore.scoreless);
+    expect(await firstValueFrom(service.evaluateLetter$(0, 4))).toEqual(LetterScore.scoreless);
+  });
 });
 

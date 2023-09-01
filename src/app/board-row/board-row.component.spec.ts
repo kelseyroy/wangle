@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { BoardRowComponent } from './board-row.component';
 import { BoardTileComponent } from '../board-tile/board-tile.component';
@@ -12,6 +13,9 @@ describe('BoardRowComponent', () => {
       declarations: [
         BoardRowComponent,
         BoardTileComponent
+      ],
+      imports: [
+        HttpClientTestingModule
       ]
     });
     fixture = TestBed.createComponent(BoardRowComponent);
